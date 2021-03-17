@@ -1,6 +1,8 @@
 const service = require("./../service/user.service");
 const types = require("./../constants/error-types");
 const tools = require("./../uitls/tools");
+const { PUBLIC_KEY } = require("./../app/config");
+const jwt = require("jsonwebtoken");
 
 const verifyLogin = async (ctx, next) => {
   //1.获取用户名和密码
@@ -26,6 +28,28 @@ const verifyLogin = async (ctx, next) => {
   ctx.user = user;
   next();
 };
+const verifyAuth = async (ctx, next) => {
+  const authorization = ctx.headers.authorization;
+  // 1.判断token不能为空
+  if (!authorization) {
+    const err = new Error(types.UNAUTHORIZATION);
+    return ctx.app.emit("error", err, ctx);
+  }
+  const token = authorization.replace("Bearer ", "");
+  // 2.jwt验证token
+  try {
+    const result = jwt.verify(token, PUBLIC_KEY, {
+      algorithms: ["RS256"],
+    });
+    // console.log(result); //验证成功会到这里,返回result,如:{ id: 4, name: '18825113670', iat: 1615957753, exp: 1616044153 }
+    ctx.user = result;
+    await next();
+  } catch (error) {
+    const err = new Error(types.ERROR_AUTHORIZATION);
+    return ctx.app.emit("error", err, ctx);
+  }
+};
 module.exports = {
   verifyLogin,
+  verifyAuth,
 };

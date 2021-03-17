@@ -18,11 +18,17 @@ const errorHandle = (error, ctx) => {
       status = 400;
       message = "用户or密码错误";
       break;
+    case types.UNAUTHORIZATION:
+      status = 400;
+      message = "缺少token";
+      break;
+    case types.ERROR_AUTHORIZATION:
+      status = 400;
+      message = "无效的token";
 
     default:
       break;
   }
-
   ctx.status = status;
   ctx.body = {
     code: status,
