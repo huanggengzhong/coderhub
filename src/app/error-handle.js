@@ -22,6 +22,10 @@ const errorHandle = (error, ctx) => {
       status = 400;
       message = "缺少token";
       break;
+    case types.CONTENT_NOT_EXISTS:
+      status = 400;
+      message = "内容不能为空";
+      break;
     case types.ERROR_AUTHORIZATION:
       status = 400;
       message = "无效的token";
