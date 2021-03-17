@@ -10,5 +10,19 @@ class MomentController {
       message: "新增动态成功",
     };
   }
+  async momentList(ctx, next) {
+    const data = {
+      size: ctx.request.body.size,
+      offset: ctx.request.body.offset,
+    };
+    console.log(data, "data");
+    const result = await momentService.getList(data);
+    console.log(result, "result");
+    ctx.body = {
+      code: 200,
+      data: result,
+      message: "查询结果",
+    };
+  }
 }
 module.exports = new MomentController();
