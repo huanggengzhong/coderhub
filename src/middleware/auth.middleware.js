@@ -75,7 +75,6 @@ const verifyPermission = async (ctx, next) => {
       const err = new Error(types.NO_DATA_EDIT_AUTH);
       return ctx.app.emit("error", err, ctx);
     }
-    console.log(isPermiassion, "isPermiassion");
     await next();
   } catch (error) {
     throw new Error(error, "verifyPermission");

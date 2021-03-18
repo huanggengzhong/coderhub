@@ -33,5 +33,15 @@ class MomentService {
       throw new Error(error, "moment-edit");
     }
   }
+  // 删除动态
+  async delete(id) {
+    try {
+      const statement = `DELETE FROM moment WHERE id=?;`;
+      const result = await connect.execute(statement, [id]);
+      return result;
+    } catch (error) {
+      throw new Error(error, "moment-delete");
+    }
+  }
 }
 module.exports = new MomentService();

@@ -1,4 +1,3 @@
-const momentRouter = require("../router/moment.router");
 const momentService = require("./../service/moment.service");
 class MomentController {
   async create(ctx, next) {
@@ -43,6 +42,16 @@ class MomentController {
         code: 200,
         data: +moment_id,
         message: "修改成功",
+      };
+    }
+  }
+  async remove(ctx, next) {
+    const { moment_id } = ctx.params;
+    let result = await momentService.delete(moment_id);
+    if (result.length > 0) {
+      ctx.body = {
+        code: 200,
+        message: "删除成功",
       };
     }
   }

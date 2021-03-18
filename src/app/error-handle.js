@@ -31,7 +31,7 @@ const errorHandle = (error, ctx) => {
       message = "无效的token";
     case types.NO_DATA_EDIT_AUTH:
       status = 400;
-      message = "没有修改权限";
+      message = "操作失败";
 
     default:
       break;

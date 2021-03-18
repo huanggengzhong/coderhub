@@ -5,6 +5,7 @@ const {
   momentList,
   detail,
   edit,
+  remove,
 } = require("./../controller/moment.controller");
 const {
   verifyAuth,
@@ -19,5 +20,7 @@ momentRouter.get("/", momentList);
 momentRouter.get("/:moment_id", detail);
 //修改(需要登录和验证是否自己,最后才是操作)
 momentRouter.patch("/:moment_id", verifyAuth, verifyPermission, edit);
+//修改(需要登录和验证是否自己,最后才是操作)
+momentRouter.delete("/:moment_id", verifyAuth, verifyPermission, remove);
 
 module.exports = momentRouter;
