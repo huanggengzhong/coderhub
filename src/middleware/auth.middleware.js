@@ -1,9 +1,11 @@
 const service = require("./../service/user.service");
+const AuthService = require("./../service/authService");
 const types = require("./../constants/error-types");
 const tools = require("./../uitls/tools");
 const { PUBLIC_KEY } = require("./../app/config");
 const jwt = require("jsonwebtoken");
 
+//登录权限
 const verifyLogin = async (ctx, next) => {
   //1.获取用户名和密码
   const { name, password } = ctx.request.body;
@@ -28,6 +30,7 @@ const verifyLogin = async (ctx, next) => {
   ctx.user = user;
   next();
 };
+// token权限
 const verifyAuth = async (ctx, next) => {
   const authorization = ctx.headers.authorization;
   // 1.判断token不能为空
@@ -49,7 +52,37 @@ const verifyAuth = async (ctx, next) => {
     return ctx.app.emit("error", err, ctx);
   }
 };
+/**
+ * 验证是否有操作数据库表的权限
+ * @param {*} ctx
+ * @param {*} next
+ * result:Boolean
+ */
+const verifyPermission = async (ctx, next) => {
+  try {
+    // 1.根据传递的参数名获取表名和数据库id名,比如参数{ comment_id: '1' },最终得到commont,1
+    const [resouseName] = Object.keys(ctx.params);
+    const tableName = resouseName.replace("_id", "");
+    const dataId = ctx.params[resouseName];
+    const user_id = ctx.user.id;
+    // 2.查询数据库是否具备权限
+    const isPermiassion = await AuthService.checkResource({
+      tableName,
+      dataId,
+      user_id,
+    });
+    if (!isPermiassion) {
+      const err = new Error(types.NO_DATA_EDIT_AUTH);
+      return ctx.app.emit("error", err, ctx);
+    }
+    console.log(isPermiassion, "isPermiassion");
+    await next();
+  } catch (error) {
+    throw new Error(error, "verifyPermission");
+  }
+};
 module.exports = {
   verifyLogin,
   verifyAuth,
+  verifyPermission,
 };

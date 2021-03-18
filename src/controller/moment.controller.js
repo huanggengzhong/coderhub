@@ -1,3 +1,4 @@
+const momentRouter = require("../router/moment.router");
 const momentService = require("./../service/moment.service");
 class MomentController {
   async create(ctx, next) {
@@ -23,6 +24,27 @@ class MomentController {
       data: result,
       message: "查询结果",
     };
+  }
+  async detail(ctx, next) {
+    const { moment_id } = ctx.params;
+    const result = await momentService.detail(moment_id);
+    ctx.body = {
+      code: 200,
+      data: result[0] || [],
+      message: "查询成功",
+    };
+  }
+  async edit(ctx, next) {
+    const { moment_id } = ctx.params;
+    const { content } = ctx.request.body;
+    let result = await momentService.edit(moment_id, content);
+    if (result.length > 0) {
+      ctx.body = {
+        code: 200,
+        data: +moment_id,
+        message: "修改成功",
+      };
+    }
   }
 }
 module.exports = new MomentController();
