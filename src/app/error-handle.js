@@ -30,8 +30,8 @@ const errorHandle = (error, ctx) => {
       status = 400;
       message = "无效的token";
     case types.NO_DATA_EDIT_AUTH:
-      status = 400;
-      message = "不允许操作";
+      status = 401;
+      message = "授权失败";
 
     default:
       break;
