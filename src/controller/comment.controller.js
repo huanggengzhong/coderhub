@@ -13,5 +13,8 @@ class CommentController {
       };
     }
   }
+ async reply(ctx,next){
+    //  todo
+ }
 }
 module.exports = new CommentController();
