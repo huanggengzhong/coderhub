@@ -1,10 +1,11 @@
 const Router = require("koa-router");
 const commentRouter = new Router({ prefix: "/comment" });
 const { verifyAuth } = require("./../middleware/auth.middleware");
-const { create,reply } = require("./../controller/comment.controller");
+const { create, reply } = require("./../controller/comment.controller");
 // 发表评论
 commentRouter.post("/", verifyAuth, create);
 // 根据评论回复
-commentRouter.post("/:commentId/reply",verifyAuth,reply)
+commentRouter.post("/:commentId/reply", verifyAuth, reply);
 
+// 修改评论
 module.exports = commentRouter;
