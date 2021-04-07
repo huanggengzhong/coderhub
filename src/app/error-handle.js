@@ -29,11 +29,18 @@ const errorHandle = (error, ctx) => {
     case types.ERROR_AUTHORIZATION:
       status = 400;
       message = "无效的token";
+      break;
     case types.NO_DATA_EDIT_AUTH:
       status = 401;
       message = "授权失败";
-
+      break;
+    case types.LABEL_DATA_EXIST:
+      status = 409;
+      message = "标签已存在,请换一个标签名";
+      break;
     default:
+      status = 500;
+      message = "操作异常";
       break;
   }
   ctx.status = status;

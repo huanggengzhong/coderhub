@@ -50,7 +50,7 @@ class CommentController {
   }
   async list(ctx, next) {
     const { momentId } = ctx.query;
-    const result = await commentService.list(momentId);
+    const result = await commentService.getCommentsByMomentId(momentId);
     if (result) {
       ctx.body = {
         code: 200,

@@ -58,5 +58,16 @@ class MomentService {
       throw new Error(error, "moment-delete");
     }
   }
+  async hasLabel(momentId, labelId) {
+    const statement = `SELECT * FROM moment_label WHERE moment_id=? AND label_id=?;`;
+    const [result] = await connect.execute(statement, [momentId, labelId]);
+    return result[0] ? true : false;
+  }
+  async addLabel(momentId, labelId) {
+    // console.log(momentId, labelId, "momentId, labelId");
+    const statement = `INSERT INTO moment_label (moment_id,label_id) VALUES (?,?);`;
+    const [result] = await connect.execute(statement, [momentId, labelId]);
+    return result;
+  }
 }
 module.exports = new MomentService();

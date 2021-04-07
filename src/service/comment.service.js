@@ -26,15 +26,15 @@ class CommentService {
     const [result] = await connect.execute(statement, [commentId]);
     return result;
   }
-  async list(momentId) {
+  async getCommentsByMomentId(momentId) {
     const statement = `SELECT  m.id,m.content,m.comment_id commentId,m.creatAt cteateTime,
     JSON_OBJECT('id',u.id,'name',u.name) user
     from comment m
     LEFT JOIN user u ON u.id=m.user_id
     WHERE moment_id=?;`;
-    console.log(momentId, "momentId444");
+    // console.log(momentId, "momentId444");
     const [result] = await connect.execute(statement, [momentId]);
-    console.log(result, "result");
+    // console.log(result, "result");
     return result;
   }
 }

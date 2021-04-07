@@ -74,7 +74,7 @@ const verifyPermission = async (ctx, next) => {
       dataId,
       user_id,
     });
-    console.log(isPermiassion, "isPermiassion");
+    console.log(isPermiassion, "isPermiassion是否有操作权限");
     if (!isPermiassion) {
       const err = new Error(types.NO_DATA_EDIT_AUTH);
       return ctx.app.emit("error", err, ctx);

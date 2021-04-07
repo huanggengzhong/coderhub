@@ -54,5 +54,24 @@ class MomentController {
       };
     }
   }
+  async addLabels(ctx, next) {
+    const { labels } = ctx;
+    const { moment_id } = ctx.params;
+    console.log(labels, "取上下文中的Labels");
+    // 判断是否已经在关系表里
+    for (const label of labels) {
+      const isExist = await momentService.hasLabel(moment_id, label.id);
+      if (!isExist) {
+        console.log("不存在");
+        await momentService.addLabel(moment_id, label.id);
+      } else {
+        console.log("存在");
+      }
+    }
+    ctx.body = {
+      code: 200,
+      message: "给动态添加标签成功~",
+    };
+  }
 }
 module.exports = new MomentController();
