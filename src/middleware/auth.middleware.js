@@ -49,9 +49,8 @@ const verifyAuth = async (ctx, next) => {
     console.log("通过验证verifyAuth");
     await next();
   } catch (error) {
-    console.log(error, "操作失败err");
-    // const err = new Error(types.ERROR_AUTHORIZATION);
-    const err = new Error("操作失败");
+    console.log(error, "verifyAuth失败");
+    const err = new Error(types.ERROR_AUTHORIZATION);
     ctx.app.emit("error", err, ctx);
   }
 };

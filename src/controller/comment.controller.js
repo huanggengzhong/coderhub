@@ -48,9 +48,16 @@ class CommentController {
       };
     }
   }
-  async list() {
+  async list(ctx, next) {
     const { momentId } = ctx.query;
-    console.log(momentId, "momentId");
+    const result = await commentService.list(momentId);
+    if (result) {
+      ctx.body = {
+        code: 200,
+        data: result,
+        message: "查询成功",
+      };
+    }
   }
 }
 module.exports = new CommentController();

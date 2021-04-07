@@ -15,9 +15,8 @@ class MomentController {
       size: ctx.request.body.size,
       offset: ctx.request.body.offset,
     };
-    console.log(data, "data");
     const result = await momentService.getList(data);
-    console.log(result, "result");
+    // console.log(result, "result");
     ctx.body = {
       code: 200,
       data: result,
