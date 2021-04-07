@@ -46,10 +46,13 @@ const verifyAuth = async (ctx, next) => {
     });
     // console.log(result); //验证成功会到这里,返回result,如:{ id: 4, name: '18825113670', iat: 1615957753, exp: 1616044153 }
     ctx.user = result;
+    console.log("通过验证verifyAuth");
     await next();
   } catch (error) {
-    const err = new Error(types.ERROR_AUTHORIZATION);
-    return ctx.app.emit("error", err, ctx);
+    console.log(error, "操作失败err");
+    // const err = new Error(types.ERROR_AUTHORIZATION);
+    const err = new Error("操作失败");
+    ctx.app.emit("error", err, ctx);
   }
 };
 /**
@@ -59,18 +62,20 @@ const verifyAuth = async (ctx, next) => {
  * result:Boolean
  */
 const verifyPermission = async (ctx, next) => {
+  // 1.根据传递的参数名获取表名和数据库id名,比如参数{ comment_id: '1' },最终得到commont,1
+  const [resouseName] = Object.keys(ctx.params);
+  const tableName = resouseName.replace("_id", "");
+  const dataId = ctx.params[resouseName];
+  const user_id = ctx.user.id;
   try {
-    // 1.根据传递的参数名获取表名和数据库id名,比如参数{ comment_id: '1' },最终得到commont,1
-    const [resouseName] = Object.keys(ctx.params);
-    const tableName = resouseName.replace("_id", "");
-    const dataId = ctx.params[resouseName];
-    const user_id = ctx.user.id;
     // 2.查询数据库是否具备权限
+    // console.log(tableName, dataId, user_id, "verifyPermission-data");
     const isPermiassion = await AuthService.checkResource({
       tableName,
       dataId,
       user_id,
     });
+    console.log(isPermiassion, "isPermiassion");
     if (!isPermiassion) {
       const err = new Error(types.NO_DATA_EDIT_AUTH);
       return ctx.app.emit("error", err, ctx);
