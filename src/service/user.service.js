@@ -15,6 +15,12 @@ class UserService {
     const result = await connnection.execute(statement, [name]);
     return result[0]; //取数组第一个
   }
+  // 用户头像更新
+  async updateAvaterUrlById(url, id) {
+    const statement = `UPDATE user SET avater_url =? WHERE id=?;`;
+    const [result] = await connnection.execute(statement, [url, id]);
+    return result;
+  }
 }
 
 module.exports = new UserService();

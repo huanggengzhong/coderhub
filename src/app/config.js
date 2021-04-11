@@ -11,7 +11,7 @@ const PUBLIC_KEY = fs.readFileSync(path.resolve(__dirname, "./key/public.key"));
 const AUTH_TIME = 60 * 60 * 24;
 
 module.exports = {
-  APP_PORT,
+  APP_HOST,
   APP_PORT,
   MYSQL_HOST,
   MYSQL_PORT,
