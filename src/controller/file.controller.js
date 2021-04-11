@@ -27,5 +27,29 @@ class FileController {
       };
     }
   }
+  async savePictureInfo(ctx, next) {
+    try {
+      const files = ctx.req.files;
+      const { momentId } = ctx.query;
+      // 将所有图片保存在数据库中
+      const { id } = ctx.user;
+      for (let file of files) {
+        const { filename, mimetype, size } = file;
+        await fileService.createFile({
+          filename,
+          mimetype,
+          size,
+          id,
+          momentId,
+        });
+      }
+      ctx.body = {
+        code: 200,
+        message: "动态配图上传完成",
+      };
+    } catch (error) {
+      console.log("动态图片上传错误", error);
+    }
+  }
 }
 module.exports = new FileController();

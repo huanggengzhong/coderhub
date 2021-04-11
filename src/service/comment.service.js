@@ -28,7 +28,7 @@ class CommentService {
   }
   async getCommentsByMomentId(momentId) {
     const statement = `SELECT  m.id,m.content,m.comment_id commentId,m.creatAt cteateTime,
-    JSON_OBJECT('id',u.id,'name',u.name) user
+    JSON_OBJECT('id',u.id,'name',u.name,'avater',u.avater_url) user
     from comment m
     LEFT JOIN user u ON u.id=m.user_id
     WHERE moment_id=?;`;
