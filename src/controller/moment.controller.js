@@ -1,5 +1,7 @@
 const fileService = require("../service/file.service");
 const momentService = require("./../service/moment.service");
+const fs = require("fs");
+const { PICTURE_PATH } = require("./../constants/file-path");
 class MomentController {
   async create(ctx, next) {
     //1.获取传递的数据
@@ -75,8 +77,19 @@ class MomentController {
     };
   }
   async fileInfo(ctx, next) {
-    const { filename } = ctx.params;
+    let { filename } = ctx.params;
     const fileInfo = await fileService.getFileByFilename(filename);
+
+    // 增加类型显示
+    const { type } = ctx.query;
+    const types = ["small"]; //目前暂定一种,要多种的话在上传时分割多种即可
+
+    if (types.some((item) => item === type)) {
+      filename = type + "_" + filename;
+    }
+    // 显示图片
+    ctx.response.set("content-type", fileInfo.mimetype);
+    ctx.body = fs.createReadStream(`${PICTURE_PATH}/${filename}`);
   }
 }
 module.exports = new MomentController();
