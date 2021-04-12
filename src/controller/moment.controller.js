@@ -1,3 +1,4 @@
+const fileService = require("../service/file.service");
 const momentService = require("./../service/moment.service");
 class MomentController {
   async create(ctx, next) {
@@ -72,6 +73,10 @@ class MomentController {
       code: 200,
       message: "给动态添加标签成功~",
     };
+  }
+  async fileInfo(ctx, next) {
+    const { filename } = ctx.params;
+    const fileInfo = await fileService.getFileByFilename(filename);
   }
 }
 module.exports = new MomentController();

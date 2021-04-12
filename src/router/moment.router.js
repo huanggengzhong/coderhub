@@ -7,6 +7,7 @@ const {
   edit,
   remove,
   addLabels,
+  fileInfo,
 } = require("./../controller/moment.controller");
 const {
   verifyAuth,
@@ -24,6 +25,8 @@ momentRouter.get("/:moment_id", detail);
 momentRouter.patch("/:moment_id", verifyAuth, verifyPermission, edit);
 //删除(需要登录和验证是否自己,最后才是操作)
 momentRouter.delete("/:moment_id", verifyAuth, verifyPermission, remove);
+// 动态预览接口
+momentRouter.get("/images/:filename", fileInfo);
 
 // 给动态添加标签
 momentRouter.post(

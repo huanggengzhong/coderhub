@@ -26,5 +26,8 @@ class FileService {
     ]);
     return result;
   }
+  async getFileByFilename(name) {
+    console.log(name, "name");
+  }
 }
 module.exports = new FileService();

@@ -1,4 +1,5 @@
 const connect = require("./../app/database");
+const { APP_HOST, APP_PORT } = require("./../app/config");
 class MomentService {
   // 创建动态
   async create(data) {
@@ -19,7 +20,8 @@ class MomentService {
     (SELECT IF(COUNT(c.id),JSON_ARRAYAGG(
       JSON_OBJECT('id', c.id, 'content', c.content, 'commentId', c.comment_id, 'createTime', c.creatAt,
                   'user', JSON_OBJECT('id', cu.id, 'name', cu.name))
-    ),NULL) FROM comment c LEFT JOIN user cu ON c.user_id = cu.id WHERE m.id = c.moment_id) comments
+    ),NULL) FROM comment c LEFT JOIN user cu ON c.user_id = cu.id WHERE m.id = c.moment_id) comments,
+    (SELECT JSON_ARRAYAGG(CONCAT('${APP_HOST}:${APP_PORT}/moment/images/',file.filename)) FROM file where m.id=file.moment_id) images
   FROM moment m
   LEFT JOIN user u ON m.user_id = u.id
   LEFT JOIN moment_label ml ON m.id = ml.moment_id
