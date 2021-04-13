@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon ./src/main.js",
     "start": "pm2 start pm2.config.js"
   },
   "keywords": [],

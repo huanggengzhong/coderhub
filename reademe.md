@@ -35,7 +35,12 @@ pm2 delete all
 安装
 cnpm i
 启动 (在coderhub目录下)
-pm2 start pm2.config.js
+npm start
+
+调试
+npm dev
+
+
 
 
 ```
