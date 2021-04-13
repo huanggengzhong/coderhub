@@ -20,7 +20,8 @@ sudo systemctl stop nginx
 ```js
 cd /mydata/coderhub
 git pull
-pm2 start pm2.config.js
+npm i
+pm2 start
 
 ```
 # pm2常用命令
@@ -31,7 +32,9 @@ pm2 list
 pm2 stop all
 删除
 pm2 delete all
-启动 在coderhub目录下
+安装
+cnpm i
+启动 (在coderhub目录下)
 pm2 start pm2.config.js
 
 

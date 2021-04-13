@@ -19,7 +19,6 @@ const storagePicture = Multer.diskStorage({
     cb(null, PICTURE_PATH);
   },
   filename: (req, file, cb) => {
-    console.log(file, "file666");
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
