@@ -18,7 +18,9 @@
     "koa-bodyparser": "^4.3.0",
     "koa-multer": "^1.0.2",
     "koa-router": "^10.0.0",
-    "mysql2": "^2.2.5"
+    "koa-session": "^6.2.0",
+    "mysql2": "^2.2.5",
+    "svg-captcha": "^1.4.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

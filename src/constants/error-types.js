@@ -7,6 +7,7 @@ const ERROR_AUTHORIZATION = "error_authorization";
 const CONTENT_NOT_EXISTS = "content_not_exists";
 const NO_DATA_EDIT_AUTH = "NO_DATA_EDIT_AUTH";
 const LABEL_DATA_EXIST = "LABEL_DATA_EXIST";
+const PICCODE_ERROR = "PICCODE_ERROR";
 
 module.exports = {
   NAME_OR_PASSWORD_NULL,
@@ -18,4 +19,5 @@ module.exports = {
   CONTENT_NOT_EXISTS,
   NO_DATA_EDIT_AUTH,
   LABEL_DATA_EXIST,
+  PICCODE_ERROR,
 };

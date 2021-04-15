@@ -38,6 +38,10 @@ const errorHandle = (error, ctx) => {
       status = 409;
       message = "标签已存在,请换一个标签名";
       break;
+    case types.PICCODE_ERROR:
+      status = 400;
+      message = "验证码不正确";
+      break;
     default:
       status = 500;
       message = "操作异常";

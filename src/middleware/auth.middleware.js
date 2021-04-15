@@ -8,10 +8,14 @@ const jwt = require("jsonwebtoken");
 //登录权限
 const verifyLogin = async (ctx, next) => {
   //1.获取用户名和密码
-  const { name, password } = ctx.request.body;
+  const { name, password, picCode } = ctx.request.body;
   //2.判断用户名和密码是否为空
   if (!name || !password) {
     return ctx.app.emit("error", new Error(types.NAME_OR_PASSWORD_NULL), ctx);
+  }
+  //3.判断验证码
+  if (picCode !== ctx.session.code) {
+    return ctx.app.emit("error", new Error(types.PICCODE_ERROR), ctx);
   }
 
   //3.判断用户是否存在
