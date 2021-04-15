@@ -21,7 +21,7 @@ sudo systemctl stop nginx
 cd /mydata/coderhub
 git pull
 npm i
-pm2 start
+npm start
 
 ```
 # pm2常用命令
@@ -39,9 +39,6 @@ npm start
 
 调试
 npm dev
-
-
-
 
 ```
 
