@@ -1,5 +1,8 @@
 const fileService = require("./../service/file.service.js");
 const UserService = require("./../service/user.service.js");
+const config = require("./../app/config.js");
+const fs = require("fs");
+var COS = require("cos-nodejs-sdk-v5");
 
 const { APP_HOST, APP_PORT } = require("./../app/config");
 class FileController {
@@ -49,6 +52,61 @@ class FileController {
       };
     } catch (error) {
       console.log("动态图片上传错误", error);
+    }
+  }
+  async cosfile(ctx, next) {
+    let url = "";
+    const _ctx = ctx;
+    const file = ctx.req.file;
+    try {
+      //增加cos上传
+      var cos = await new COS({
+        SecretId: config.COS_SECRETID,
+        SecretKey: config.COS_SECRETKEY,
+      });
+      // 分片上传
+      await cos.sliceUploadFile(
+        {
+          Bucket: "codehub-1258521833",
+          Region: "ap-guangzhou",
+          Key: `file/${file.filename}`,
+          FilePath: file.path,
+        },
+        async function (err, data) {
+          if (!err) {
+            // console.log("文件上传成功2,回调地址:", data.Location);
+            const { mimetype, size } = file;
+            const { id } = ctx.user;
+            // 将头像信息保存在数据库中
+            const result = await fileService.createCosfile({
+              filename: data.Location,
+              mimetype,
+              size,
+              id,
+            });
+            if (result) {
+              url = data.Location;
+              console.log(url, "上传文件成功");
+              //这里没有效果
+              _ctx.body = {
+                status: 200,
+                message: "cos上传文件成功",
+                url,
+              };
+            }
+          } else {
+            console.log("cos错误", err);
+          }
+        }
+      );
+      //临时增加
+      _ctx.body = {
+        status: 200,
+        message: "cos上传文件成功",
+        // url,
+      };
+    } catch (error) {
+      console.log(error);
     }
   }
 }

@@ -1,4 +1,5 @@
 const app = require("./app");
+//初始化数据库
 require("./app/database");
 const config = require("./app/config");
 app.listen(config.APP_PORT, () => {

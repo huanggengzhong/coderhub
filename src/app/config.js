@@ -18,6 +18,8 @@ module.exports = {
   MYSQL_DATABASE,
   MYSQL_USER,
   MYSQL_PASSWORD,
+  COS_SECRETID,
+  COS_SECRETKEY,
 } = process.env;
 
 // 单独添加写在后面

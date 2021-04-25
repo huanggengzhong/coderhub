@@ -1,7 +1,6 @@
 const connect = require("./../app/database");
 class FileService {
   async createAvater(data) {
-    console.log(data,"sadfadf ");
     const statement = `INSERT INTO avater (filename,mimetype,size,user_id) VALUES(?,?,?,?);`;
     const [result] = await connect.execute(statement, [
       data.filename,
@@ -9,7 +8,19 @@ class FileService {
       data.size,
       data.id,
     ]);
-    console.log(result,"sdf");
+
+    return result;
+  }
+  async createCosfile(data) {
+    const statement = `INSERT INTO cosfile (filename,mimetype,size,user_id) VALUES(?,?,?,?);`;
+    // console.log(data, "data");
+    const [result] = await connect.execute(statement, [
+      data.filename,
+      data.mimetype,
+      data.size,
+      data.id,
+    ]);
+
     return result;
   }
   async getAvatarByUserId(userId) {

@@ -1,6 +1,7 @@
 const Multer = require("koa-multer");
 const Jimp = require("jimp");
 const path = require("path");
+
 const { AVATER_PATH, PICTURE_PATH } = require("../constants/file-path");
 const storageAvater = Multer.diskStorage({
   destination: (req, file, cb) => {
@@ -22,6 +23,14 @@ const storagePicture = Multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
+//上传cos
+const cosFile = Multer.diskStorage({
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+const cosUpload = Multer({ storage: cosFile });
+const cosHandler = cosUpload.single("file");
 // 上传动态图
 const pictureUpload = Multer({ storage: storagePicture });
 const pictureHandler = pictureUpload.array("file", 9);
@@ -52,10 +61,12 @@ const pictureResize = async (ctx, next) => {
     console.log("压缩图片错误", error);
   }
 };
+
 module.exports = {
   avaterHandler,
   pictureHandler,
   pictureResize,
+  cosHandler,
 };
 
 // 上传动态图片
