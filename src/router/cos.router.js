@@ -7,6 +7,6 @@ const { saveAvatarInfo, cosfile } = require("./../controller/file.controller");
 
 // 上传单个头像
 // verifyAuth
-cosRouter.post("/avater", verifyAuth, cosHandler, cosfile);
+cosRouter.post("/avater", cosHandler, cosfile);
 
 module.exports = cosRouter;

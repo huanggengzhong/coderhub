@@ -55,58 +55,56 @@ class FileController {
     }
   }
   async cosfile(ctx, next) {
-    let url = "";
-    const _ctx = ctx;
-    const file = ctx.req.file;
     try {
-      //增加cos上传
-      var cos = await new COS({
-        SecretId: config.COS_SECRETID,
-        SecretKey: config.COS_SECRETKEY,
-      });
-      // 分片上传
-      await cos.sliceUploadFile(
-        {
-          Bucket: "codehub-1258521833",
-          Region: "ap-guangzhou",
-          Key: `file/${file.filename}`,
-          FilePath: file.path,
-        },
-        async function (err, data) {
-          if (!err) {
-            // console.log("文件上传成功2,回调地址:", data.Location);
-            const { mimetype, size } = file;
-            const { id } = ctx.user;
-            // 将头像信息保存在数据库中
-            const result = await fileService.createCosfile({
-              filename: data.Location,
-              mimetype,
-              size,
-              id,
-            });
-            if (result) {
-              url = data.Location;
-              console.log(url, "上传文件成功");
-              //这里没有效果
-              _ctx.body = {
-                status: 200,
-                message: "cos上传文件成功",
-                url,
-              };
+      let url = "";
+      const _ctx = ctx;
+      const file = ctx.req.file;
+      const res = await new Promise((resolve, reject) => {
+        //增加cos上传
+        var cos = new COS({
+          SecretId: config.COS_SECRETID,
+          SecretKey: config.COS_SECRETKEY,
+        });
+        // 分片上传
+        cos.sliceUploadFile(
+          {
+            Bucket: "codehub-1258521833",
+            Region: "ap-guangzhou",
+            Key: `file/${file.filename}`,
+            FilePath: file.path,
+          },
+          async function (err, data) {
+            if (!err) {
+              // console.log("文件上传成功2,回调地址:", data.Location);
+              const { mimetype, size } = file;
+              // const { id } = ctx.user;
+              // 将头像信息保存在数据库中
+              const result = await fileService.createCosfile({
+                filename: data.Location,
+                mimetype,
+                size,
+                id: 4,
+              });
+              if (result) {
+                url = data.Location;
+                // console.log(url, "上传文件成功");
+                resolve(data.Location);
+              }
+            } else {
+              console.log("cos错误", err);
+              reject(err);
             }
-          } else {
-            console.log("cos错误", err);
           }
-        }
-      );
-      //临时增加
+        );
+      });
+      // console.log(res, "上传文件成功");
       _ctx.body = {
         status: 200,
         message: "cos上传文件成功",
-        // url,
+        url: res,
       };
     } catch (error) {
-      console.log(error);
+      console.log("cos上传失败", error);
     }
   }
 }
