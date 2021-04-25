@@ -60,6 +60,7 @@ class FileController {
       const _ctx = ctx;
       const file = ctx.req.file;
       const res = await new Promise((resolve, reject) => {
+        //用await new Promise()解决了body不返回数据的巨坑
         //增加cos上传
         var cos = new COS({
           SecretId: config.COS_SECRETID,
@@ -77,13 +78,13 @@ class FileController {
             if (!err) {
               // console.log("文件上传成功2,回调地址:", data.Location);
               const { mimetype, size } = file;
-              // const { id } = ctx.user;
+              const { id } = ctx.user;
               // 将头像信息保存在数据库中
               const result = await fileService.createCosfile({
                 filename: data.Location,
                 mimetype,
                 size,
-                id: 4,
+                id,
               });
               if (result) {
                 url = data.Location;
@@ -97,7 +98,6 @@ class FileController {
           }
         );
       });
-      // console.log(res, "上传文件成功");
       _ctx.body = {
         status: 200,
         message: "cos上传文件成功",

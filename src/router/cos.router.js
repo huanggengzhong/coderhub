@@ -5,8 +5,8 @@ const { cosHandler } = require("./../middleware/file.middleware");
 
 const { saveAvatarInfo, cosfile } = require("./../controller/file.controller");
 
-// 上传单个头像
+// 上传单个图片
 // verifyAuth
-cosRouter.post("/avater", cosHandler, cosfile);
+cosRouter.post("/picture", verifyAuth, cosHandler, cosfile);
 
 module.exports = cosRouter;
